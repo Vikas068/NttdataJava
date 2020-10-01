@@ -1,0 +1,17 @@
+
+create database trdb;                        (creating the database.)
+
+use trdb;                                    (Using the database.)
+
+drop table LIC;                              (Droping Table name to avoid duplication table)
+
+create table LIC(Policynumber int auto_increment primary key,Policyname varchar(20),Policyholdername varchar(20),Policystartdate varchar(20),Premiumamount float,Premiumtype varchar(20));
+(Creating the table).
+
+
+
+Login credentials.
+/*
+user-name: root.
+password: root.
+*/
