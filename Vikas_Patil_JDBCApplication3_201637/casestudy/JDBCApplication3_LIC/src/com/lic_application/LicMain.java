@@ -34,9 +34,11 @@ public class LicMain {
 			case 3:
 				//Delete method.
 				Lic.Delete();
+				break;
 			case 4:
 				//Update method.
 				Lic.Update();
+				break;
 			}
 			
 		}while(ch != 0);
