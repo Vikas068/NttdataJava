@@ -11,7 +11,7 @@ public class Lic {
 	static Scanner scan=new Scanner(System.in);
 	
 	//JDBC driver name and driver url.
-	static final String Driver="com.mysql.cj.jdbc.Driver";
+	static final String Driver="com.mysql.jdbc.Driver";
 	static final String Url="jdbc:mysql://localhost:3306/trdb";
 	
 	//Database user name and password.
