@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 public class Lic {
@@ -23,11 +24,10 @@ public class Lic {
 	static PreparedStatement pst=null;
 	
 	//Insert operation method.
-	public static int Insert()
+	public static int Insert() throws ClassNotFoundException
 	{
 		int rowInsert=0;
-
-		try {
+      try {
 			String Policyname,Policyholdername,Preimiumtype;
 			float Premiumamount;
 			String Policystartdate;
@@ -84,7 +84,7 @@ public class Lic {
 			pst.close();
 			
 		}
-		catch(Exception e)
+		catch(SQLException e)
 		{
 			//Handling the JDBC Exception.
 			System.out.println(e);
@@ -92,23 +92,24 @@ public class Lic {
 		return rowInsert;
 	}
 	//Method for fetching the details.
-	public static void Fetch()
+	public static int Fetch() throws ClassNotFoundException
 	{
 		//adding policynumber to fetch the data.
-		int Policynumber;
+		int Policynumber,rowDelete=0;
 		try {
 			Class.forName(Driver);
 			con=DriverManager.getConnection(Url,USER,PASS);
 			System.out.println("Enter the policy number to fetch");
 			Policynumber=scan.nextInt();
 			
-			//Query to fetch the data using policynumber.
+			//Query to fetch the data using policy.
 			String sql="select * from LIC where Policynumber=?";
 			PreparedStatement pst=con.prepareStatement(sql);
 			
 			//setting the value to column.
 			pst.setInt(1, Policynumber);
 			ResultSet rs=pst.executeQuery();
+			
 			while(rs.next())
 			{
 				//Retrieve by column name.
@@ -127,23 +128,23 @@ public class Lic {
 				System.out.println("Policy Type:"+ptype+"\nPolicy Amount: "+amount );
 				//Exiting the display state.
 				System.exit(0);
-				
 			}
-			System.out.println("Wrong credentilas....");
+			System.out.println("No data is found....try with other policy number.");
 			
 			//Clean-up environment.
 			con.close();
 			pst.close();
 		}
-		catch(Exception e)
+		catch(SQLException e)
 		{
 			//Handling exception occured.
 			System.out.println(e);
 		}
+		return rowDelete;
 		
 	}
 	//Method for Deleting the details.
-	public static int Delete()
+	public static int Delete() throws ClassNotFoundException
 	{
 		//Adding policynumber to delete the data by using Policynumber.
 		int rowDelete=0,Policynumber;
@@ -170,22 +171,22 @@ public class Lic {
 			}
 			else
 			{
-				System.out.println("Not deleted data successfully....");
+				System.out.println("Enterd policynumber is not Exist..Failed to delete!!!!....");
 			}
 			
 		}
 		//Handling the Exception by catch clause.  
-		catch(Exception e)
+		catch(SQLException e)
 		{
 			System.out.println(e);
 		}
 		return rowDelete;
 	}
 	//method for updating the data.
-	public static void Update()
+	public static int Update() throws ClassNotFoundException
 	{
 		//update using by Policynumber,Premiumamount.
-		int Policynumber,rowDelete=0;
+		int Policynumber,rowupdate=0;
 		float Premiumamount;
 		try {
 			Class.forName(Driver);
@@ -196,22 +197,30 @@ public class Lic {
 			Policynumber=scan.nextInt();
 			System.out.println("Re-enter the premium amount ");
 			Premiumamount=scan.nextFloat();
-			String sql="update LIC set Premiumamount=200 where Policynumber=1";
+			String sql="update LIC set Premiumamount=? where Policynumber=?";
+			
 			PreparedStatement pst=con.prepareStatement(sql);
-			rowDelete=pst.executeUpdate();
+			
+			pst.setFloat(1,Premiumamount);
+			pst.setInt(2, Policynumber);
+			
+		
+			rowupdate=pst.executeUpdate();
 			//Condition to check the data is updated or not.
-			if(rowDelete>0)
+			if(rowupdate>0)
 			{
 				System.out.println("Details are updated successfully!!!!!");
 			}
-			else
+			else	
 			{
 				System.out.println("Details are failed to update....");
 			}
 		}
-		catch(Exception e)
+		//Handling the sqlException.
+		catch(SQLException e)
 		{
 			System.out.println(e);
 		}
+		return rowupdate;
 	}	
 }
