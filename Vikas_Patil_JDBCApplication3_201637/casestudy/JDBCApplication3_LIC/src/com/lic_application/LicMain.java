@@ -13,10 +13,10 @@ public class LicMain {
 		do {
 			//Operations.
 			System.out.println("-------Choose below one---------");
-			System.out.println("1.Insert Details");
-			System.out.println("2.Fetch Details");
-			System.out.println("3.Delete Details");
-			System.out.println("4.Update details");
+			System.out.println("1.Insert Lic Details");
+			System.out.println("2.Fetch  Lic Details");
+			System.out.println("3.Delete Lic Details");
+			System.out.println("4.Update Lic details");
 			
 			System.out.println("Please choose any one opertaion to perform.");
 			ch=scan.nextInt();
